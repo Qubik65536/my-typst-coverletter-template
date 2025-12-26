@@ -16,22 +16,30 @@
   name: none,
   address: none,
   contacts: (),
-  recipient: (start-title: none, cl-title: none, date: none, department: none, institution: none, address: none, postcode: none),
+  recipient: (
+    start-title: none,
+    cl-title: none,
+    date: none,
+    department: none,
+    institution: none,
+    address: none,
+    postcode: none,
+  ),
   supplements: none,
   salutation: "Sincerely,",
   // Colour options
   primary-colour: rgb("#000000"),
   headings-colour: rgb("#2b2b2b"),
   subheadings-colour: rgb("#333333"),
-  date-colour: rgb("#666666"),
-  link-colour: none,  // none = inherit from text colour
+  date-colour: rgb("#000000"),
+  link-colour: none, // none = inherit from text colour
   // Font size options
   name-size: 20pt,
-  body-size: 11pt,
-  address-size: 11pt,
+  body-size: 10pt,
+  address-size: 10pt,
   contact-size: 10pt,
   recipient-size: 10pt,
-  cl-title-size: 12pt,
+  cl-title-size: 10pt,
   supplement-size: 10pt,
   // Layout options
   line-stroke: 0.2pt,
@@ -77,13 +85,11 @@
     align(
       left,
       {
-        if department != none and department != [] and department != "" {
-          text(recipient-size, font: font-type, fill: subheadings-colour, weight: "bold")[#department]
-        }
-        h(1fr)
         if date != none and date != [] and date != "" {
+          v(0.5em)
           text(recipient-size, font: font-type, fill: date-colour, weight: "light")[#date\ ]
         } else {
+          v(0.5em)
           text(
             recipient-size,
             font: font-type,
@@ -92,8 +98,14 @@
           )[ #datetime.today(offset: auto).display(date-format)\ ]
         }
 
+        v(0.5em)
+
+        if department != none and department != [] and department != "" {
+          text(recipient-size, font: font-type, fill: subheadings-colour, weight: "regular")[#department\ ]
+        }
+
         if institution != none and institution != [] and institution != "" {
-          text(recipient-size, font: font-type, fill: subheadings-colour, weight: "bold")[#institution\ ]
+          text(recipient-size, font: font-type, fill: subheadings-colour, weight: "regular")[#institution\ ]
         }
 
         if address != none and address != [] and address != "" {
@@ -104,10 +116,14 @@
         }
       },
     )
+
     if cl-title != none and cl-title != [] and cl-title != "" {
-      align(left, text(cl-title-size, font: font-type, fill: primary-colour, weight: "bold")[#upper(cl-title)])
-      v(0.1em)
+      v(0.5em)
+      align(left, text(cl-title-size, font: font-type, fill: primary-colour)[#cl-title])
     }
+
+    v(0.8em)
+
     if start-title != none and start-title != [] and start-title != "" {
       set text(body-size, font: font-type, fill: primary-colour, weight: body-weight)
       [#start-title]
@@ -122,16 +138,16 @@
     show link: set text(fill: resolved-link-colour)
     contacts
       .map(contact => {
-          if ("link" in contact) {
-            link(contact.link)[#{
-                contact.text
-              }]
-          } else [
-            #{
-              contact.text
-            }
-          ]
-        })
+        if ("link" in contact) {
+          link(contact.link)[#{
+            contact.text
+          }]
+        } else [
+          #{
+            contact.text
+          }
+        ]
+      })
       .join(contact-separator)
   }
 
@@ -196,20 +212,20 @@
 
   // Signature block with improved layout
   v(closing-spacing)
-  
+
   // Salutation
   if salutation != none {
     set par(first-line-indent: 0em)
     text(body-size, font: font-type, fill: primary-colour, weight: salutation-weight)[#salutation]
     v(signature-spacing) // Space for signature
   }
-  
+
   // Name (signature line)
   if name != none and name != [] and name != "" {
     set par(first-line-indent: 0em)
     text(body-size, font: font-type, fill: primary-colour, weight: signature-weight)[#name]
   }
-  
+
   // Supplements (enclosures, attachments, etc.)
   if supplements != none {
     v(supplement-spacing)
@@ -240,7 +256,7 @@
   headings-colour: rgb("#2b2b2b"),
   subheadings-colour: rgb("#333333"),
   date-colour: rgb("#666666"),
-  link-colour: none,  // none = inherit from text colour
+  link-colour: none, // none = inherit from text colour
   // Font size options
   name-size: 20pt,
   body-size: 11pt,
@@ -285,16 +301,16 @@
     show link: set text(fill: resolved-link-colour)
     contacts
       .map(contact => {
-          if ("link" in contact) {
-            link(contact.link)[#{
-                contact.text
-              }]
-          } else [
-            #{
-              contact.text
-            }
-          ]
-        })
+        if ("link" in contact) {
+          link(contact.link)[#{
+            contact.text
+          }]
+        } else [
+          #{
+            contact.text
+          }
+        ]
+      })
       .join(contact-separator)
   }
 
